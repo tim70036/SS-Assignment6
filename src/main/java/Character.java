@@ -40,7 +40,7 @@ public class Character {
 			for(Character key : targets.keySet()){
 				parent.stroke(0);
 				parent.strokeWeight(targets.get(key));
-				parent.curve(x, y, x, y, key.getX(), key.getY(), key.getX(), key.getY());
+				parent.curve(x, y, (600+x)/2, (350+y)/2, (600+key.getX())/2, (350+key.getY())/2, key.getX(), key.getY());
 			}
 			parent.strokeWeight(1);
 		}
