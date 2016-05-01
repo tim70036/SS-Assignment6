@@ -19,7 +19,9 @@ public class Network {
 	}
 
 	public void display(){
-		
+		parent.stroke(204,250,0);
+		parent.strokeWeight(4);
+		parent.ellipse(600,350,450,450);
 	}
 	
 }

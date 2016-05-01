@@ -11,6 +11,8 @@ public class MainApplet extends PApplet{
 	private String path = "main/resources/";
 	private String file = "starwars-episode-1-interactions.json";
 	
+	private Network test;
+	
 	private final static int width = 1200, height = 650;
 	
 	public void setup() {
@@ -18,10 +20,14 @@ public class MainApplet extends PApplet{
 		size(width, height);
 		smooth();
 		loadData();
+		
+		test = new Network(this);
+		
+		background(255);
 	}
 
 	public void draw() {
-
+		test.display();
 	}
 
 	private void loadData(){
