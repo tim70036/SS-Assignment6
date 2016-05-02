@@ -32,9 +32,37 @@ public class Character {
 	}
 
 	public void display(){
-		parent.background(255);
-		parent.fill(r, g, b, 20);
+		// When mouse is on , show the name and bigger ellipse, if pressed move the ellipse
+		if((parent.mouseX <= x+20 && parent.mouseX >= x-20) && (parent.mouseY <= y+20 && parent.mouseY >= y-20)){
+			//  Moused pressed ? move with mouse
+			if(parent.mousePressed == true)
+			{
+				x = parent.mouseX;
+				y = parent.mouseY;
+			}
+			else
+			{
+				x = ogx;
+				y = ogy;
+			}
+			
+			// Bigger ellipse
+			parent.fill(r, g, b, 80);
+			parent.ellipse(x, y, 50, 50);
+			
+			// Show name
+			parent.fill(30,144,255,80);
+			float textWidth = (name.length() > 5) ? name.length() * 14.5f : 80;
+			parent.rect(parent.mouseX, parent.mouseY - 17, textWidth,35,40);
+			parent.fill(255);
+			parent.textSize(20);
+			parent.text(name, parent.mouseX + 10, parent.mouseY + 7.5f);
+		}
+		
+		// Draw the smaller ellipse
+		parent.fill(r, g, b, 80);
 		parent.ellipse(x, y, 40, 40);
+		parent.fill(255);
 		// determine whether in circle 
 		if(showLink){
 			for(Character key : targets.keySet()){
@@ -43,11 +71,6 @@ public class Character {
 				parent.curve(x, y, (600+x)/2, (350+y)/2, (600+key.getX())/2, (350+key.getY())/2, key.getX(), key.getY());
 			}
 			parent.strokeWeight(1);
-		}
-		// the vertex will become bigger when mouse is on the field of it
-		if((parent.mouseX <= x+20 && parent.mouseX >= x-20) && (parent.mouseY <= y+20 && parent.mouseY >= y-20)){
-			parent.fill(r, g, b, 20);
-			parent.ellipse(x, y, 50, 50);
 		}
 	}
 	

@@ -36,8 +36,12 @@ public class Network {
 	public void display(){
 		parent.stroke(204,250,0);
 		parent.strokeWeight(4);
+		parent.fill(255);
 		parent.ellipse(circleX,circleY,circleRadius,circleRadius);
-		parent.curve(100, 100, 200, 200,200,300,100,400);
+		parent.stroke(255);
+		parent.strokeWeight(1);
+		parent.fill(255);
+		//parent.curve(100, 100, 200, 200,200,300,100,400);
 	}
 	
 }

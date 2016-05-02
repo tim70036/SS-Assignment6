@@ -12,6 +12,7 @@ public class MainApplet extends PApplet{
 	private String file = "starwars-episode-1-interactions.json";
 	
 	private Network test;
+	private Character test2 = new Character(this, "GOLD FIVE", 100,100,20,255,100);
 	
 	private final static int width = 1200, height = 650;
 	
@@ -23,11 +24,13 @@ public class MainApplet extends PApplet{
 		
 		test = new Network(this);
 		
-		background(255);
+		
 	}
 
 	public void draw() {
+		background(255);
 		test.display();
+		test2.display();
 	}
 
 	private void loadData(){
