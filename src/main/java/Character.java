@@ -32,6 +32,8 @@ public class Character {
 	}
 
 	public void display(){
+		parent.stroke(255);
+		parent.strokeWeight(1);
 		// When mouse is on , show the name and bigger ellipse, if pressed move the ellipse
 		if((parent.mouseX <= x+20 && parent.mouseX >= x-20) && (parent.mouseY <= y+20 && parent.mouseY >= y-20)){
 			//  Moused pressed ? move with mouse
@@ -51,7 +53,7 @@ public class Character {
 			parent.ellipse(x, y, 50, 50);
 			
 			// Show name
-			parent.fill(30,144,255,80);
+			parent.fill(30,144,255,150);
 			float textWidth = (name.length() > 5) ? name.length() * 14.5f : 80;
 			parent.rect(parent.mouseX, parent.mouseY - 17, textWidth,35,40);
 			parent.fill(255);
@@ -64,14 +66,14 @@ public class Character {
 		parent.ellipse(x, y, 40, 40);
 		parent.fill(255);
 		// determine whether in circle 
-		if(showLink){
-			for(Character key : targets.keySet()){
-				parent.stroke(0);
-				parent.strokeWeight(targets.get(key));
-				parent.curve(x, y, (600+x)/2, (350+y)/2, (600+key.getX())/2, (350+key.getY())/2, key.getX(), key.getY());
-			}
-			parent.strokeWeight(1);
-		}
+//		if(showLink){
+//			for(Character key : targets.keySet()){
+//				parent.stroke(0);
+//				parent.strokeWeight(targets.get(key));
+//				parent.curve(x, y, (600+x)/2, (350+y)/2, (600+key.getX())/2, (350+key.getY())/2, key.getX(), key.getY());
+//			}
+//			parent.strokeWeight(1);
+//		}
 	}
 	
 	// getter & setter //
