@@ -90,9 +90,7 @@ public class Network {
 	public void addCharactersInCircle(Character ch){
 		charactersInCircle.add(ch);
 		double pos = 0;
-		System.out.println(charactersInCircle.size());
 		for(Character cha : charactersInCircle){
-			System.out.println("fuck");
 			cha.setX((float)(getCircleX()+getCircleDiameter()/2*Math.cos(Math.toRadians(pos))));
 			cha.setY((float)(getCircleY()+getCircleDiameter()/2*Math.sin(Math.toRadians(pos))));
 			pos += 360/getCharactersInCircle().size();
