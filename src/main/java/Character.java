@@ -84,12 +84,6 @@ public class Character {
 					- net.getCircleDiameter()*net.getCircleDiameter()/4 < 0.1){
 				theFirst = 0;
 				net.addCharactersInCircle(this);
-				double pos = 0;
-				for(Character ch : net.getCharactersInCircle()){
-					ch.setX((float)(net.getCircleX()+net.getCircleDiameter()/2*Math.cos(Math.toRadians(pos))));
-					ch.setY((float)(net.getCircleY()+net.getCircleDiameter()/2*Math.sin(Math.toRadians(pos))));
-					pos += 360/net.getCharactersInCircle().size();
-				}
 			}
 			else{
 				theFirst = 0;
