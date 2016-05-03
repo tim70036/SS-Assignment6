@@ -19,20 +19,17 @@ public class Network {
 	private int circleDiameter;
 	private int circleX;
 	private int circleY;
-	private int circleNum;
 	private Character firstCh;
 	
 	// Getter Setter
 	public void setCircleDiameter(int r){circleDiameter = r;}
 	public void setCircleX(int x){circleX = x;}
 	public void setCircleY(int y){circleY = y;}
-	public void setCircleNum(int n){circleNum = n;}
 	public void addCharacters(Character ch) { characters.add(ch); }
 	
 	public int getCircleDiameter(){return circleDiameter;}
 	public int getCircleX(){return circleX;}
 	public int getCircleY(){return circleY;}
-	public int getCircleNum(){return circleNum;}
 	public ArrayList<Character> getCharacters(){return characters;}
 	public ArrayList<Character> getCharactersInCircle(){return charactersInCircle;}
 	
@@ -45,7 +42,6 @@ public class Network {
 		this.circleX = 600;
 		this.circleY = 350;
 		this.circleDiameter = 450;
-		this.circleNum = 0;
 	}
 	
 	
@@ -91,5 +87,15 @@ public class Network {
 			}
 		}
 	}
-	
+	public void addCharactersInCircle(Character ch){
+		charactersInCircle.add(ch);
+		double pos = 0;
+		System.out.println(charactersInCircle.size());
+		for(Character cha : charactersInCircle){
+			System.out.println("fuck");
+			cha.setX((float)(getCircleX()+getCircleDiameter()/2*Math.cos(Math.toRadians(pos))));
+			cha.setY((float)(getCircleY()+getCircleDiameter()/2*Math.sin(Math.toRadians(pos))));
+			pos += 360/getCharactersInCircle().size();
+		}
+	}
 }

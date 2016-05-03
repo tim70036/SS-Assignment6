@@ -62,9 +62,13 @@ public class Character {
 			}
 			// mouse is not pressed, go back to the initial position
 			else{
+				// drag to circle
 				if((x-net.getCircleX())*(x-net.getCircleX()) + (y-net.getCircleY())*(y-net.getCircleY())
-					- net.getCircleDiameter()*net.getCircleDiameter()/4 < 0.0001){
+					- net.getCircleDiameter()*net.getCircleDiameter()/4 < 0.1){
 					theFirst = 0;
+					if(!net.getCharactersInCircle().contains(this)){
+						net.addCharactersInCircle(this);
+					}
 				}
 				else{
 					theFirst = 0;
@@ -75,9 +79,17 @@ public class Character {
 		}
 		// the mouse is out of the ellipse, go back to the initial position
 		else{
+			// drag to circle
 			if((x-net.getCircleX())*(x-net.getCircleX()) + (y-net.getCircleY())*(y-net.getCircleY())
-					- net.getCircleDiameter()*net.getCircleDiameter()/4 < 0.0001){
-				theFirst = 0;	
+					- net.getCircleDiameter()*net.getCircleDiameter()/4 < 0.1){
+				theFirst = 0;
+				net.addCharactersInCircle(this);
+				double pos = 0;
+				for(Character ch : net.getCharactersInCircle()){
+					ch.setX((float)(net.getCircleX()+net.getCircleDiameter()/2*Math.cos(Math.toRadians(pos))));
+					ch.setY((float)(net.getCircleY()+net.getCircleDiameter()/2*Math.sin(Math.toRadians(pos))));
+					pos += 360/net.getCharactersInCircle().size();
+				}
 			}
 			else{
 				theFirst = 0;
