@@ -69,7 +69,6 @@ public class Network {
 			else
 				charac.display(false,this);
 		}
-		//parent.curve(100, 100, 200, 200,200,300,100,400);
 	}
 	
 	public void setCharactersOGXY()
@@ -88,12 +87,23 @@ public class Network {
 		}
 	}
 	public void addCharactersInCircle(Character ch){
+		ch.setShowLink(true);
 		charactersInCircle.add(ch);
 		double pos = 0;
 		for(Character cha : charactersInCircle){
 			cha.setX((float)(getCircleX()+getCircleDiameter()/2*Math.cos(Math.toRadians(pos))));
 			cha.setY((float)(getCircleY()+getCircleDiameter()/2*Math.sin(Math.toRadians(pos))));
 			pos += 360/getCharactersInCircle().size();
+		}
+	}
+	
+	public void rearrangeCharactersIncricle()
+	{
+		double pos = 0;
+		for(Character cha : getCharactersInCircle()){
+			cha.setX((float)(getCircleX() + getCircleDiameter()/2*Math.cos(Math.toRadians(pos))));
+			cha.setY((float)(getCircleY() + getCircleDiameter()/2*Math.sin(Math.toRadians(pos))));
+			pos += 360 / getCharactersInCircle().size();
 		}
 	}
 }

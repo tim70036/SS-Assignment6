@@ -37,7 +37,7 @@ public class Character {
 		portable = can;
 		parent.stroke(255);
 		parent.strokeWeight(1);
-		// When mouse is on , show the name and bigger ellipse, if pressed move the ellipse
+		// When mouse is on character, show the name and bigger ellipse, if pressed move the ellipse
 		if((parent.mouseX <= x+20 && parent.mouseX >= x-20) && (parent.mouseY <= y+20 && parent.mouseY >= y-20)){
 			// Bigger ellipse
 			parent.fill(r, g, b, 80);
@@ -64,7 +64,7 @@ public class Character {
 					y = parent.mouseY;
 				}
 			}
-			// mouse is not pressed, Check now position
+			// Mouse on ellipse mouse but is not pressed, Check now position
 			else{
 				// Been dragged to circle
 				if((x-net.getCircleX())*(x-net.getCircleX()) + (y-net.getCircleY())*(y-net.getCircleY())
@@ -74,21 +74,20 @@ public class Character {
 						net.addCharactersInCircle(this);
 					}
 				}
+				// Not in circle ----> drag out of circle
 				else{
 					// Rearrange all character
-					double pos = 0;
-					for(Character cha : net.getCharactersInCircle()){
-						cha.setX((float)(net.getCircleX()+net.getCircleDiameter()/2*Math.cos(Math.toRadians(pos))));
-						cha.setY((float)(net.getCircleY()+net.getCircleDiameter()/2*Math.sin(Math.toRadians(pos))));
-						pos += 360/net.getCharactersInCircle().size();
-					}
+					net.rearrangeCharactersIncricle();
+					
+					// Reset this character
 					theFirst = 0;
 					x = ogx;
 					y = ogy;
 				}
 			}
 		}
-		// the mouse is out of the ellipse, go back to the initial position
+		
+		// the mouse is not on the ellipse, and if this character is not in circle go back to the initial position
 		else{
 			if(!net.getCharactersInCircle().contains(this)){
 				theFirst = 0;
@@ -103,14 +102,16 @@ public class Character {
 		parent.ellipse(x, y, 40, 40);
 		parent.fill(255);
 		// determine whether in circle 
-//		if(showLink){
-//			for(Character key : targets.keySet()){
-//				parent.stroke(0);
-//				parent.strokeWeight(targets.get(key));
-//				parent.curve(x, y, (600+x)/2, (350+y)/2, (600+key.getX())/2, (350+key.getY())/2, key.getX(), key.getY());
-//			}
-//			parent.strokeWeight(1);
-//		}
+		
+		// Show the link 
+		if(showLink){
+			for(Character key : targets.keySet()){
+				parent.stroke(0);
+				parent.strokeWeight(targets.get(key)*8);
+				parent.curve(x, y, (600+x)/2, (350+y)/2, (600+key.getX())/2, (350+key.getY())/2, key.getX(), key.getY());
+			}
+			parent.strokeWeight(1);
+		}
 	}
 	
 	// getter & setter //
@@ -162,6 +163,4 @@ public class Character {
 	public HashMap<Character,Integer> getTarget(){
 		return this.targets;
 	}
-	//////////////////////////////////////////////////////
-
 }
