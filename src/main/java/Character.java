@@ -79,19 +79,7 @@ public class Character {
 		}
 		// the mouse is out of the ellipse, go back to the initial position
 		else{
-			// drag to circle
-			if((x-net.getCircleX())*(x-net.getCircleX()) + (y-net.getCircleY())*(y-net.getCircleY())
-					- net.getCircleDiameter()*net.getCircleDiameter()/4 < 0.1){
-				theFirst = 0;
-				net.addCharactersInCircle(this);
-				double pos = 0;
-				for(Character ch : net.getCharactersInCircle()){
-					ch.setX((float)(net.getCircleX()+net.getCircleDiameter()/2*Math.cos(Math.toRadians(pos))));
-					ch.setY((float)(net.getCircleY()+net.getCircleDiameter()/2*Math.sin(Math.toRadians(pos))));
-					pos += 360/net.getCharactersInCircle().size();
-				}
-			}
-			else{
+			if(!net.getCharactersInCircle().contains(this)){
 				theFirst = 0;
 				x = ogx;
 				y = ogy;
