@@ -61,7 +61,7 @@ public class Network {
 				firstCh = ch;
 			}
 		}
-		// the one have the biggest theFirst can be move, so let the argument be true
+		// The one have the biggest theFirst can be move, so let the argument be true
 		for(Character charac : characters){
 			if(charac == firstCh){
 				charac.display(true,this);

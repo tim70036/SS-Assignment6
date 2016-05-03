@@ -64,9 +64,9 @@ public class Character {
 					y = parent.mouseY;
 				}
 			}
-			// mouse is not pressed, go back to the initial position
+			// mouse is not pressed, Check now position
 			else{
-				// drag to circle
+				// Been dragged to circle
 				if((x-net.getCircleX())*(x-net.getCircleX()) + (y-net.getCircleY())*(y-net.getCircleY())
 					- net.getCircleDiameter()*net.getCircleDiameter()/4 < 0.01){
 					theFirst = 0;
@@ -75,7 +75,7 @@ public class Character {
 					}
 				}
 				else{
-					// rearrange all character
+					// Rearrange all character
 					double pos = 0;
 					for(Character cha : net.getCharactersInCircle()){
 						cha.setX((float)(net.getCircleX()+net.getCircleDiameter()/2*Math.cos(Math.toRadians(pos))));
@@ -152,6 +152,11 @@ public class Character {
 	
 	public void setShowLink(boolean b){
 		this.showLink = b;
+	}
+	
+	public void addTarget(Character ch, Integer i)
+	{
+		targets.put(ch, i);
 	}
 	
 	public HashMap<Character,Integer> getTarget(){

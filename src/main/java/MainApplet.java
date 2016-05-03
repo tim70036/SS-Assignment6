@@ -64,6 +64,19 @@ public class MainApplet extends PApplet{
 			}
 			// Arrange original x,y in that network
 			curNetwork.setCharactersOGXY();
+			
+			// Run through links
+			for(int j=0 ; j<links.size() ; j++)
+			{
+				JSONObject link = links.getJSONObject(j);
+				int source = link.getInt("source");
+				int target = link.getInt("target");
+				Integer value = link.getInt("value");
+				
+				// Add link into Source char 
+				Character src = curNetwork.getCharacters().get(source);
+				src.addTarget(curNetwork.getCharacters().get(target), value);
+			}
 		}
 	}
 
