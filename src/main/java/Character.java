@@ -56,6 +56,10 @@ public class Character {
 				// the first one be clicked can start to add first, and can have the biggest theFirst
 				theFirst++;
 				if(portable){
+					if(net.getCharactersInCircle().contains(this)){
+						net.getCharactersInCircle().remove(this);
+						
+					}
 					x = parent.mouseX;
 					y = parent.mouseY;
 				}
@@ -64,13 +68,20 @@ public class Character {
 			else{
 				// drag to circle
 				if((x-net.getCircleX())*(x-net.getCircleX()) + (y-net.getCircleY())*(y-net.getCircleY())
-					- net.getCircleDiameter()*net.getCircleDiameter()/4 < 0.1){
+					- net.getCircleDiameter()*net.getCircleDiameter()/4 < 0.01){
 					theFirst = 0;
 					if(!net.getCharactersInCircle().contains(this)){
 						net.addCharactersInCircle(this);
 					}
 				}
 				else{
+					// rearrange all character
+					double pos = 0;
+					for(Character cha : net.getCharactersInCircle()){
+						cha.setX((float)(net.getCircleX()+net.getCircleDiameter()/2*Math.cos(Math.toRadians(pos))));
+						cha.setY((float)(net.getCircleY()+net.getCircleDiameter()/2*Math.sin(Math.toRadians(pos))));
+						pos += 360/net.getCharactersInCircle().size();
+					}
 					theFirst = 0;
 					x = ogx;
 					y = ogy;
@@ -79,13 +90,7 @@ public class Character {
 		}
 		// the mouse is out of the ellipse, go back to the initial position
 		else{
-			// drag to circle
-			if((x-net.getCircleX())*(x-net.getCircleX()) + (y-net.getCircleY())*(y-net.getCircleY())
-					- net.getCircleDiameter()*net.getCircleDiameter()/4 < 0.1){
-				theFirst = 0;
-				net.addCharactersInCircle(this);
-			}
-			else{
+			if(!net.getCharactersInCircle().contains(this)){
 				theFirst = 0;
 				x = ogx;
 				y = ogy;
