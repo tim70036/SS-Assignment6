@@ -29,10 +29,6 @@ public class MainApplet extends PApplet{
 		size(width, height);
 		smooth();
 		loadData();
-		
-		
-		
-		
 	}
 
 	public void draw() {

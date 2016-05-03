@@ -13,6 +13,8 @@ public class Character {
 	private MainApplet parent;
 	private int r, g, b;
 	private boolean showLink = false;
+	private boolean portable = false;
+	private long theFirst = 0;
 	private float ogx,ogy; // original position
 	private float x, y;
 	private String name;
@@ -31,23 +33,12 @@ public class Character {
 		targets = new HashMap<Character,Integer>();
 	}
 
-	public void display(){
+	public void display(boolean can, Network net){
+		portable = can;
 		parent.stroke(255);
 		parent.strokeWeight(1);
 		// When mouse is on , show the name and bigger ellipse, if pressed move the ellipse
 		if((parent.mouseX <= x+20 && parent.mouseX >= x-20) && (parent.mouseY <= y+20 && parent.mouseY >= y-20)){
-			//  Moused pressed ? move with mouse
-			if(parent.mousePressed == true)
-			{
-				x = parent.mouseX;
-				y = parent.mouseY;
-			}
-			else
-			{
-				x = ogx;
-				y = ogy;
-			}
-			
 			// Bigger ellipse
 			parent.fill(r, g, b, 80);
 			parent.ellipse(x, y, 50, 50);
@@ -59,7 +50,42 @@ public class Character {
 			parent.fill(255);
 			parent.textSize(20);
 			parent.text(name, parent.mouseX + 10, parent.mouseY + 7.5f);
+			
+			//  Mouse pressed ? move with mouse
+			if(parent.mousePressed == true){
+				// the first one be clicked can start to add first, and can have the biggest theFirst
+				theFirst++;
+				if(portable){
+					x = parent.mouseX;
+					y = parent.mouseY;
+				}
+			}
+			// mouse is not pressed, go back to the initial position
+			else{
+				if((x-net.getCircleX())*(x-net.getCircleX()) + (y-net.getCircleY())*(y-net.getCircleY())
+					- net.getCircleDiameter()*net.getCircleDiameter()/4 < 0.0001){
+					theFirst = 0;
+				}
+				else{
+					theFirst = 0;
+					x = ogx;
+					y = ogy;
+				}
+			}
 		}
+		// the mouse is out of the ellipse, go back to the initial position
+		else{
+			if((x-net.getCircleX())*(x-net.getCircleX()) + (y-net.getCircleY())*(y-net.getCircleY())
+					- net.getCircleDiameter()*net.getCircleDiameter()/4 < 0.0001){
+				theFirst = 0;	
+			}
+			else{
+				theFirst = 0;
+				x = ogx;
+				y = ogy;
+			}
+		}
+		
 		
 		// Draw the smaller ellipse
 		parent.fill(r, g, b, 80);
@@ -77,6 +103,10 @@ public class Character {
 	}
 	
 	// getter & setter //
+	public long getFirst(){
+		return this.theFirst;
+	}
+	
 	public void setOGX(float x){
 		this.ogx = x;
 	}
