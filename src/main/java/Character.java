@@ -77,7 +77,7 @@ public class Character {
 				// Not in circle ----> drag out of circle
 				else{
 					// Rearrange all character
-					net.rearrangeCharactersIncricle();
+					net.rearrangeCharactersIncircle();
 					
 					// Reset this character
 					theFirst = 0;
@@ -102,7 +102,7 @@ public class Character {
 		parent.ellipse(x, y, 40, 40);
 		parent.fill(255);
 		// determine whether in circle 
-		
+		/*
 		// Show the link 
 		if(showLink){
 			for(Character key : targets.keySet()){
@@ -111,7 +111,7 @@ public class Character {
 				parent.curve(x, y, (600+x)/2, (350+y)/2, (600+key.getX())/2, (350+key.getY())/2, key.getX(), key.getY());
 			}
 			parent.strokeWeight(1);
-		}
+		}*/
 	}
 	
 	// getter & setter //

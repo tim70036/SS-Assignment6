@@ -69,6 +69,8 @@ public class Network {
 			else
 				charac.display(false,this);
 		}
+		
+		drawLink();
 	}
 	
 	public void setCharactersOGXY()
@@ -89,21 +91,39 @@ public class Network {
 	public void addCharactersInCircle(Character ch){
 		ch.setShowLink(true);
 		charactersInCircle.add(ch);
+		rearrangeCharactersIncircle();
+		/*
 		double pos = 0;
 		for(Character cha : charactersInCircle){
 			cha.setX((float)(getCircleX()+getCircleDiameter()/2*Math.cos(Math.toRadians(pos))));
 			cha.setY((float)(getCircleY()+getCircleDiameter()/2*Math.sin(Math.toRadians(pos))));
 			pos += 360/getCharactersInCircle().size();
 		}
+		*/
 	}
 	
-	public void rearrangeCharactersIncricle()
+	public void rearrangeCharactersIncircle()
 	{
 		double pos = 0;
 		for(Character cha : getCharactersInCircle()){
 			cha.setX((float)(getCircleX() + getCircleDiameter()/2*Math.cos(Math.toRadians(pos))));
 			cha.setY((float)(getCircleY() + getCircleDiameter()/2*Math.sin(Math.toRadians(pos))));
 			pos += 360 / getCharactersInCircle().size();
+		}
+	}
+	public void drawLink(){
+		if(charactersInCircle.size() > 1){
+			for(Character cha : charactersInCircle){
+				for(Character key : cha.getTarget().keySet()){
+					for(Character ch : charactersInCircle){
+						if(key==ch){
+							parent.stroke(0);
+							parent.strokeWeight(cha.getTarget().get(key)*3);
+							parent.curve(ch.getX()-(key.getX()-ch.getX())/2, ch.getY()+(key.getY()-ch.getY())/2, ch.getX(), ch.getY(), key.getX(), key.getY(), key.getX()-(key.getX()-ch.getX())/2, key.getY()+(key.getY()-ch.getY())/2);
+						}
+					}
+				}
+			}
 		}
 	}
 }
