@@ -82,6 +82,8 @@ public class Network {
 						if((ch.getX()-getCircleX())*(ch.getX()-getCircleX()) + (ch.getY()-getCircleY())*(ch.getY()-getCircleY())- getCircleDiameter()*getCircleDiameter()/4 < 0.01)
 						{
 							ch.setState(2);// inCircle
+							ch.setShowLink(true);// Show the link
+							
 							if(!getCharactersInCircle().contains(ch))
 								addCharactersInCircle(ch);
 						}
@@ -89,6 +91,8 @@ public class Network {
 						else
 						{
 							ch.setState(3);// inOrigin
+							ch.setShowLink(false);
+							
 							// Remove character
 							removeCharactersInCircle(ch);
 						}
@@ -138,14 +142,18 @@ public class Network {
 	{
 		for(Character ch : characters)
 			if(!this.charactersInCircle.contains(ch))
-				this.addCharactersInCircle(ch);
+			{
+				ch.setShowLink(true);
+				this.addCharactersInCircle(ch);	
+			}
+				
 		
 		for(Character ch : characters) // Because rearranging is dynamic, do Ani later 
 		{
 			// Ani
 			ch.setState(4);// inAni
-			Ani.to(ch,1,"x",ch.getCX());
-			Ani.to(ch,1,"y",ch.getCY());
+			Ani.to(ch,1.3f,"x",ch.getCX());
+			Ani.to(ch,1.3f,"y",ch.getCY());
 		}	
 	}
 	
@@ -162,11 +170,12 @@ public class Network {
 			if(this.charactersInCircle.contains(ch))
 			{
 				this.removeCharactersInCircle(ch);
+				ch.setShowLink(false);
 				
 				// Ani
 				ch.setState(4);// inAni
-				Ani.to(ch,1,"x",ch.getOGX());
-				Ani.to(ch,1,"y",ch.getOGY());
+				Ani.to(ch,1.3f,"x",ch.getOGX());
+				Ani.to(ch,1.3f,"y",ch.getOGY());
 			}
 		}	
 	}
@@ -187,7 +196,7 @@ public class Network {
 		{
 			for(Character tar: ch.getTarget().keySet())
 			{
-				if(tar.getState() == 2) // inCircle
+				if(tar.getShowLink())
 				{
 					int intense = ch.getTarget().get(tar);
 					parent.strokeWeight(intense * 2);

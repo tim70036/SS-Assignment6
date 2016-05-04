@@ -17,6 +17,7 @@ public class Character {
 	// state 1 : dragged , 2 : inCircle , 3 : inOrigin , 4: inAni
 	private int state;
 	private boolean showName;
+	private boolean showLink;
 	
 	private MainApplet parent;
 	private int r, g, b;
@@ -32,12 +33,14 @@ public class Character {
 	public void setCY(float f){cy = f;}
 	public void setState(int s){ state = s;}
 	public void setShowName(boolean b){showName = b;}
+	public void setShowLink(boolean b){showLink = b;}
 	
 	
 	public float getCX(){return cx;}
 	public float getCY(){return cy;}
 	public int getState(){return state;}
 	public boolean getShowName(){return showName;}
+	public boolean getShowLink(){return showLink;}
 
 	public Character(MainApplet parent,  String name, float x, float y, int r, int g, int b){
 		this.parent = parent;
