@@ -2,6 +2,7 @@ package main.java;
 
 import java.util.ArrayList;
 
+import controlP5.ControlP5;
 import processing.core.PApplet;
 
 /**
@@ -19,7 +20,8 @@ public class Network {
 	private int circleDiameter;
 	private int circleX;
 	private int circleY;
-	private Character firstCh;
+	
+	private boolean dragging = false;
 	
 	// Getter Setter
 	public void setCircleDiameter(int r){circleDiameter = r;}
@@ -52,23 +54,60 @@ public class Network {
 		parent.fill(255);
 		parent.ellipse(circleX,circleY,circleDiameter,circleDiameter);
 		
-		// Show characters
-		long max = 0;
-		// to compare every characters' theFirst, only the one be clicked first have the biggest theFirst
-		for(Character ch : characters){
-			if(ch.getFirst() >= max){
-				max = ch.getFirst();
-				firstCh = ch;
-			}
-		}
-		// The one have the biggest theFirst can be move, so let the argument be true
-		for(Character charac : characters){
-			if(charac == firstCh){
-				charac.display(true,this);
+		// Check and Change the state of character
+		for(Character ch : characters)
+		{
+			if((parent.mouseX <= ch.getX()+20 && parent.mouseX >= ch.getX()-20) && (parent.mouseY <= ch.getY()+20 && parent.mouseY >= ch.getY()-20))
+			{
+				ch.setShowName(true);
+				
+				//  Mouse pressed
+				if(parent.mousePressed == true)
+				{
+					// If it is the first click
+					if(!dragging)
+					{
+						dragging = true;// Now the mouse is dragging , no one can be dragged
+						ch.setBeDragged(true);// Only this character is being dragged
+					}
+				}
+				// Mouse not pressed
+				else
+				{
+					// This character is the one being dragged
+					if(ch.getBeDragged())
+					{
+						// Been dragged to circle ---> add into circle
+						if((ch.getX()-getCircleX())*(ch.getX()-getCircleX()) + (ch.getY()-getCircleY())*(ch.getY()-getCircleY())- getCircleDiameter()*getCircleDiameter()/4 < 0.01)
+						{
+							if(!getCharactersInCircle().contains(ch))
+								addCharactersInCircle(ch);
+						}
+						// Been drag out of circle
+						else
+						{
+							// Remove character
+							removeCharactersInCircle(ch);
+						}
+						rearrangeCharactersIncricle();
+					}
+				
+					// Reset
+					dragging = false;// Now someone can be dragged
+					ch.setBeDragged(false);;
+				}
 			}
 			else
-				charac.display(false,this);
+			{
+				ch.setShowName(false);
+			}
+			
+			ch.display(this);
 		}
+		
+
+		// Show link
+		drawLink();
 	}
 	
 	public void setCharactersOGXY()
@@ -78,6 +117,7 @@ public class Network {
 		{
 			ch.setOGX(ogx);
 			ch.setOGY(ogy);
+			ch.setInOrigin(true);
 			ogx += 80;
 			if(ogx > 320)
 			{
@@ -86,24 +126,56 @@ public class Network {
 			}
 		}
 	}
-	public void addCharactersInCircle(Character ch){
-		ch.setShowLink(true);
+	public void addCharactersInCircle(Character ch)
+	{
+		ch.setBeDragged(false);
+		ch.setInOrigin(false);
+		ch.setInCircle(true);
+		
 		charactersInCircle.add(ch);
-		double pos = 0;
-		for(Character cha : charactersInCircle){
-			cha.setX((float)(getCircleX()+getCircleDiameter()/2*Math.cos(Math.toRadians(pos))));
-			cha.setY((float)(getCircleY()+getCircleDiameter()/2*Math.sin(Math.toRadians(pos))));
-			pos += 360/getCharactersInCircle().size();
-		}
+		rearrangeCharactersIncricle();
+	}
+	
+	public void addAllCharactersInCircle()
+	{
+		for(Character ch : characters)
+			if(!this.charactersInCircle.contains(ch))
+				this.addCharactersInCircle(ch);
+		
+	}
+	
+	public void removeCharactersInCircle(Character ch)
+	{
+		ch.setBeDragged(false);
+		ch.setInOrigin(true);
+		ch.setInCircle(false);
+		
+		charactersInCircle.remove(ch);
+		rearrangeCharactersIncricle();
+	}
+	
+	public void removeAllCharactersInCircle()
+	{
+		for(Character ch : characters)
+			if(this.charactersInCircle.contains(ch))
+				this.removeCharactersInCircle(ch);
 	}
 	
 	public void rearrangeCharactersIncricle()
 	{
 		double pos = 0;
 		for(Character cha : getCharactersInCircle()){
-			cha.setX((float)(getCircleX() + getCircleDiameter()/2*Math.cos(Math.toRadians(pos))));
-			cha.setY((float)(getCircleY() + getCircleDiameter()/2*Math.sin(Math.toRadians(pos))));
+			cha.setCX((float)(getCircleX() + getCircleDiameter()/2*Math.cos(Math.toRadians(pos))));
+			cha.setCY((float)(getCircleY() + getCircleDiameter()/2*Math.sin(Math.toRadians(pos))));
 			pos += 360 / getCharactersInCircle().size();
+		}
+	}
+	
+	public void drawLink()
+	{
+		for(Character ch : charactersInCircle)
+		{
+			
 		}
 	}
 }

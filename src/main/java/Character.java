@@ -10,21 +10,39 @@ import processing.core.PApplet;
 */
 public class Character {
 	
+	
+	
+	private static boolean dragging = false;
+	private  boolean beDragged = false;
+	private  boolean inCircle = false;
+	private boolean inOrigin = false;
+	private boolean showName = false;
+	
 	private MainApplet parent;
 	private int r, g, b;
-	private boolean showLink = false;
-	private boolean portable = false;
-	private long theFirst = 0;
+	
 	private float ogx,ogy; // original position
+	private float cx,cy;
 	private float x, y;
 	private String name;
 	private HashMap<Character,Integer> targets; // save the data of the intensity of line between target and source
+	
+	
+	public void setCX(float f){cx = f;}
+	public void setCY(float f){cy = f;}
+	
+	public void setBeDragged(boolean b) { beDragged = b ; }
+	public void setShowName(boolean b){showName = b;}
+	public void setInOrigin(boolean b){ inOrigin = b;}
+	public void setInCircle(boolean b){inCircle = b;}
+	
+	public boolean getBeDragged(){return beDragged;}
+	public boolean getShowName(){return showName;}
+	
 
-	public Character(MainApplet parent, String name, float x, float y, int r, int g, int b){
+	public Character(MainApplet parent,  String name, float x, float y, int r, int g, int b){
 		this.parent = parent;
 		this.name = name;
-		this.ogx = x;
-		this.ogy = y;
 		this.x = x;
 		this.y = y;
 		this.r = r;
@@ -33,12 +51,30 @@ public class Character {
 		targets = new HashMap<Character,Integer>();
 	}
 
-	public void display(boolean can, Network net){
-		portable = can;
+	public void display(/*boolean can*/Network net){
+		
 		parent.stroke(255);
 		parent.strokeWeight(1);
-		// When mouse is on character, show the name and bigger ellipse, if pressed move the ellipse
-		if((parent.mouseX <= x+20 && parent.mouseX >= x-20) && (parent.mouseY <= y+20 && parent.mouseY >= y-20)){
+		
+		if(beDragged)
+		{
+			x = parent.mouseX;
+			y = parent.mouseY;
+		}
+		else if(inCircle)
+		{
+			x = cx;
+			y = cy;
+		}
+		else if(inOrigin)
+		{
+			x = ogx;
+			y = ogy;
+		}
+		
+		
+		if(showName)
+		{
 			// Bigger ellipse
 			parent.fill(r, g, b, 80);
 			parent.ellipse(x, y, 50, 50);
@@ -46,78 +82,20 @@ public class Character {
 			// Show name
 			parent.fill(30,144,255,150);
 			float textWidth = (name.length() > 5) ? name.length() * 14.5f : 80;
-			parent.rect(parent.mouseX, parent.mouseY - 17, textWidth,35,40);
+			parent.rect(parent.mouseX, parent.mouseY - 17, textWidth,35,90);
 			parent.fill(255);
 			parent.textSize(20);
 			parent.text(name, parent.mouseX + 10, parent.mouseY + 7.5f);
-			
-			//  Mouse pressed ? move with mouse
-			if(parent.mousePressed == true){
-				// the first one be clicked can start to add first, and can have the biggest theFirst
-				theFirst++;
-				if(portable){
-					if(net.getCharactersInCircle().contains(this)){
-						net.getCharactersInCircle().remove(this);
-						
-					}
-					x = parent.mouseX;
-					y = parent.mouseY;
-				}
-			}
-			// Mouse on ellipse mouse but is not pressed, Check now position
-			else{
-				// Been dragged to circle
-				if((x-net.getCircleX())*(x-net.getCircleX()) + (y-net.getCircleY())*(y-net.getCircleY())
-					- net.getCircleDiameter()*net.getCircleDiameter()/4 < 0.01){
-					theFirst = 0;
-					if(!net.getCharactersInCircle().contains(this)){
-						net.addCharactersInCircle(this);
-					}
-				}
-				// Not in circle ----> drag out of circle
-				else{
-					// Rearrange all character
-					net.rearrangeCharactersIncricle();
-					
-					// Reset this character
-					theFirst = 0;
-					x = ogx;
-					y = ogy;
-				}
-			}
 		}
-		
-		// the mouse is not on the ellipse, and if this character is not in circle go back to the initial position
-		else{
-			if(!net.getCharactersInCircle().contains(this)){
-				theFirst = 0;
-				x = ogx;
-				y = ogy;
-			}
-		}
-		
 		
 		// Draw the smaller ellipse
 		parent.fill(r, g, b, 80);
 		parent.ellipse(x, y, 40, 40);
 		parent.fill(255);
-		// determine whether in circle 
-		
-		// Show the link 
-		if(showLink){
-			for(Character key : targets.keySet()){
-				parent.stroke(0);
-				parent.strokeWeight(targets.get(key)*8);
-				parent.curve(x, y, (600+x)/2, (350+y)/2, (600+key.getX())/2, (350+key.getY())/2, key.getX(), key.getY());
-			}
-			parent.strokeWeight(1);
-		}
 	}
 	
+	
 	// getter & setter //
-	public long getFirst(){
-		return this.theFirst;
-	}
 	
 	public void setOGX(float x){
 		this.ogx = x;
@@ -149,10 +127,6 @@ public class Character {
 	
 	public float getY(){
 		return this.y;
-	}
-	
-	public void setShowLink(boolean b){
-		this.showLink = b;
 	}
 	
 	public void addTarget(Character ch, Integer i)

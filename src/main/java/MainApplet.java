@@ -2,6 +2,10 @@ package main.java;
 
 import java.util.ArrayList;
 
+import controlP5.Button;
+import controlP5.CColor;
+import controlP5.ControlFont;
+import controlP5.ControlP5;
 import processing.core.PApplet;
 import processing.data.*;
 
@@ -15,28 +19,67 @@ public class MainApplet extends PApplet{
 	private ArrayList<String> files;
 	
 	private ArrayList<Network> networks;
-	private Character test2 = new Character(this, "GOLD FIVE", 100,100,20,255,100);
+	private Network curNetwork;
+	
+	private ControlP5 cp5;
+	private Button addAll;
+	private Button clear;
 	
 	private final static int width = 1200, height = 650;
 	
 	public void setup() {
 		
+		size(width, height);
+		
+		// Data
 		networks = new ArrayList<Network>();
 		files = new ArrayList<String>();
 		for(int i=1 ; i<=7 ; i++)	files.add("starwars-episode-" + i + "-interactions.json");
 		for(int i=0 ; i<7 ; i++)	networks.add(new Network(this));
-
-		size(width, height);
-		smooth();
 		loadData();
+		curNetwork = networks.get(0);
+		
+		
+		// UI Setting
+		cp5 = new ControlP5(this);
+		
+		cp5.setColorBackground( color(30,144,255) );
+		addAll = cp5.addButton("addAll") .setLabel("Add All").setPosition(900, 100) .setSize(200, 50);
+		addAll.getCaptionLabel().setFont(new ControlFont(createFont("Arial",16)));
+		clear = cp5.addButton("clear") .setLabel("Clear").setPosition(900, 200) .setSize(200, 50);
+		clear.getCaptionLabel().setFont(new ControlFont(createFont("Arial",16)));
+		
+		
+		
+		smooth();
+		
+		
 	}
 
 	public void draw() {
 		background(255);
-		networks.get(0).display();
+		curNetwork.display();
+		
+		
 		//test2.display();
 	}
-
+	
+	public void keyPressed()
+	{
+		if(key >= '1' && key <= '7')	
+			curNetwork = networks.get(key - '1');
+	}
+	
+	public void addAll()
+	{
+		curNetwork.addAllCharactersInCircle();
+	}
+	
+	public void clear()
+	{
+		curNetwork.removeAllCharactersInCircle();
+	}
+	
 	private void loadData(){
 		
 		// For each episode
