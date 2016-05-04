@@ -6,6 +6,7 @@ import controlP5.Button;
 import controlP5.CColor;
 import controlP5.ControlFont;
 import controlP5.ControlP5;
+import de.looksgood.ani.Ani;
 import processing.core.PApplet;
 import processing.data.*;
 
@@ -49,7 +50,8 @@ public class MainApplet extends PApplet{
 		clear = cp5.addButton("clear") .setLabel("Clear").setPosition(900, 200) .setSize(200, 50);
 		clear.getCaptionLabel().setFont(new ControlFont(createFont("Arial",16)));
 		
-		
+		// Ani
+		Ani.init(this);
 		
 		smooth();
 		

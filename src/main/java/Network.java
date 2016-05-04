@@ -3,6 +3,7 @@ package main.java;
 import java.util.ArrayList;
 
 import controlP5.ControlP5;
+import de.looksgood.ani.Ani;
 import processing.core.PApplet;
 
 /**
@@ -68,24 +69,26 @@ public class Network {
 					if(!dragging)
 					{
 						dragging = true;// Now the mouse is dragging , no one can be dragged
-						ch.setBeDragged(true);// Only this character is being dragged
+						ch.setState(1);// Only this character is being dragged
 					}
 				}
 				// Mouse not pressed
 				else
 				{
 					// This character is the one being dragged
-					if(ch.getBeDragged())
+					if(ch.getState() == 1)
 					{
 						// Been dragged to circle ---> add into circle
 						if((ch.getX()-getCircleX())*(ch.getX()-getCircleX()) + (ch.getY()-getCircleY())*(ch.getY()-getCircleY())- getCircleDiameter()*getCircleDiameter()/4 < 0.01)
 						{
+							ch.setState(2);// inCircle
 							if(!getCharactersInCircle().contains(ch))
 								addCharactersInCircle(ch);
 						}
 						// Been drag out of circle
 						else
 						{
+							ch.setState(3);// inOrigin
 							// Remove character
 							removeCharactersInCircle(ch);
 						}
@@ -94,7 +97,6 @@ public class Network {
 				
 					// Reset
 					dragging = false;// Now someone can be dragged
-					ch.setBeDragged(false);;
 				}
 			}
 			else
@@ -102,7 +104,7 @@ public class Network {
 				ch.setShowName(false);
 			}
 			
-			ch.display(this);
+			ch.display();
 		}
 		
 
@@ -117,7 +119,7 @@ public class Network {
 		{
 			ch.setOGX(ogx);
 			ch.setOGY(ogy);
-			ch.setInOrigin(true);
+			ch.setState(3);// inOrigin
 			ogx += 80;
 			if(ogx > 320)
 			{
@@ -127,11 +129,7 @@ public class Network {
 		}
 	}
 	public void addCharactersInCircle(Character ch)
-	{
-		ch.setBeDragged(false);
-		ch.setInOrigin(false);
-		ch.setInCircle(true);
-		
+	{	
 		charactersInCircle.add(ch);
 		rearrangeCharactersIncricle();
 	}
@@ -142,14 +140,17 @@ public class Network {
 			if(!this.charactersInCircle.contains(ch))
 				this.addCharactersInCircle(ch);
 		
+		for(Character ch : characters) // Because rearranging is dynamic, do Ani later 
+		{
+			// Ani
+			ch.setState(4);// inAni
+			Ani.to(ch,1,"x",ch.getCX());
+			Ani.to(ch,1,"y",ch.getCY());
+		}	
 	}
 	
 	public void removeCharactersInCircle(Character ch)
 	{
-		ch.setBeDragged(false);
-		ch.setInOrigin(true);
-		ch.setInCircle(false);
-		
 		charactersInCircle.remove(ch);
 		rearrangeCharactersIncricle();
 	}
@@ -157,8 +158,17 @@ public class Network {
 	public void removeAllCharactersInCircle()
 	{
 		for(Character ch : characters)
+		{
 			if(this.charactersInCircle.contains(ch))
+			{
 				this.removeCharactersInCircle(ch);
+				
+				// Ani
+				ch.setState(4);// inAni
+				Ani.to(ch,1,"x",ch.getOGX());
+				Ani.to(ch,1,"y",ch.getOGY());
+			}
+		}	
 	}
 	
 	public void rearrangeCharactersIncricle()
@@ -175,7 +185,16 @@ public class Network {
 	{
 		for(Character ch : charactersInCircle)
 		{
-			
+			for(Character tar: ch.getTarget().keySet())
+			{
+				if(tar.getState() == 2) // inCircle
+				{
+					int intense = ch.getTarget().get(tar);
+					parent.strokeWeight(intense * 2);
+					parent.stroke(0);
+					parent.line(ch.getX(), ch.getY(), tar.getX(), tar.getY());
+				}
+			}
 		}
 	}
 }
