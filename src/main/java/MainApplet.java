@@ -8,6 +8,7 @@ import controlP5.ControlFont;
 import controlP5.ControlP5;
 import de.looksgood.ani.Ani;
 import processing.core.PApplet;
+import processing.core.PFont;
 import processing.data.*;
 
 /**
@@ -21,6 +22,8 @@ public class MainApplet extends PApplet{
 	
 	private ArrayList<Network> networks;
 	private Network curNetwork;
+	private int episode;
+	private PFont font;
 	
 	private ControlP5 cp5;
 	private Button addAll;
@@ -39,6 +42,8 @@ public class MainApplet extends PApplet{
 		for(int i=0 ; i<7 ; i++)	networks.add(new Network(this));
 		loadData();
 		curNetwork = networks.get(0);
+		episode = 1;
+		font = createFont("Arial", 50);
 		
 		
 		// UI Setting
@@ -63,13 +68,19 @@ public class MainApplet extends PApplet{
 		curNetwork.display();
 		
 		
-		//test2.display();
+		fill(255,165,0);
+		
+		textFont(font);
+		text("Star Wars " + episode,470,70);
 	}
 	
 	public void keyPressed()
 	{
 		if(key >= '1' && key <= '7')	
+		{
 			curNetwork = networks.get(key - '1');
+			episode = key - '0';
+		}
 	}
 	
 	public void addAll()
