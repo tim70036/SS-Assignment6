@@ -154,15 +154,13 @@ public class Network {
 		{
 			// Ani
 			ch.setState(4);// inAni
-			Ani ani = Ani.to(ch,1.3f,"x",ch.getCX());
+			Ani.to(ch,1.3f,"x",ch.getCX());
 			Ani.to(ch,1.3f,"y",ch.getCY());
 		}	
 	}
 	
 	public void removeCharactersInCircle(Character ch)
 	{
-		for(Character cha : characters)
-			System.out.println(cha.getState());
 		charactersInCircle.remove(ch);
 		rearrangeCharactersIncricle();
 	}
