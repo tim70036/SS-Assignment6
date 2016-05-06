@@ -43,8 +43,8 @@ public class Network {
 		this.charactersInCircle = new ArrayList<Character>();
 		
 		this.circleX = 600;
-		this.circleY = 350;
-		this.circleDiameter = 450;
+		this.circleY = 300;
+		this.circleDiameter = 530;
 	}
 	
 	
