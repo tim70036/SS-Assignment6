@@ -20,11 +20,13 @@ public class MainApplet extends PApplet{
 	private String path = "main/resources/";
 	private ArrayList<String> files;
 	
+	// Data
 	private ArrayList<Network> networks;
 	private Network curNetwork;
 	private int episode;
 	private PFont font;
 	
+	// UI
 	private ControlP5 cp5;
 	private Button addAll;
 	private Button clear;
@@ -67,9 +69,9 @@ public class MainApplet extends PApplet{
 		background(255);
 		curNetwork.display();
 		
-		
 		fill(255,165,0);
 		
+		// Label
 		textFont(font);
 		text("Star Wars " + episode,870,70);
 	}
@@ -103,7 +105,7 @@ public class MainApplet extends PApplet{
 			JSONObject data = loadJSONObject(path + files.get(i));
 			JSONArray nodes = data.getJSONArray("nodes");
 			JSONArray links = data.getJSONArray("links");
-			//System.out.println(files.get(i));
+			
 			// Run Through nodes
 			for(int j=0 ; j<nodes.size() ; j++)
 			{
@@ -112,7 +114,7 @@ public class MainApplet extends PApplet{
 				int r = Integer.parseInt(node.getString("colour").substring(3,5) , 16);
 				int g = Integer.parseInt(node.getString("colour").substring(5,7) , 16);
 				int b = Integer.parseInt(node.getString("colour").substring(7,9) , 16);
-				//System.out.println(r + " " + g + " " + b);
+				
 				Character ch = new Character(this,name,0,0,r,g,b);
 				
 				// Add into corresponding network
@@ -135,5 +137,4 @@ public class MainApplet extends PApplet{
 			}
 		}
 	}
-
 }

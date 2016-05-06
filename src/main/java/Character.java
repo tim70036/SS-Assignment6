@@ -10,11 +10,7 @@ import processing.core.PApplet;
 * You will need to declare other variables depending on your implementation.
 */
 public class Character {
-	
-	
-	
-	private static boolean dragging = false;
-	
+
 	// state 1 : dragged , 2 : inCircle , 3 : inOrigin , 4: inAni
 	private int state;
 	private boolean showName;
@@ -24,12 +20,12 @@ public class Character {
 	private int r, g, b;
 	
 	private float ogx,ogy; // original position
-	private float cx,cy;
-	public float x, y;
+	private float cx,cy; // position in circle
+	public float x, y;  // current position
 	private String name;
 	private HashMap<Character,Integer> targets; // save the data of the intensity of line between target and source
 	
-	
+	// Getter Setter
 	public void setCX(float f){cx = f;}
 	public void setCY(float f){cy = f;}
 	public void setState(int s){ state = s;}
@@ -76,11 +72,7 @@ public class Character {
 		}
 		else if(state == 4)// inAni
 		{
-			
-			if(x == ogx && y == ogy)
-				state = 3;
-			else if(x == cx && y == cy)
-				state = 2;
+			// Do nothing until AniDone, addAniDone() removeAniDone() will change state
 		}
 		
 		
@@ -147,5 +139,15 @@ public class Character {
 	
 	public HashMap<Character,Integer> getTarget(){
 		return this.targets;
+	}
+	
+	public void addAniDone()
+	{
+		this.setState(2); //  inCircle
+	}
+	
+	public void removeAniDone()
+	{
+		this.setState(3); //  inOrigin
 	}
 }

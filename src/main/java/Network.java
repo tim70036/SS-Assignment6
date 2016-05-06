@@ -18,13 +18,13 @@ public class Network {
 	private ArrayList<Character> characters;
 	private ArrayList<Character> charactersInCircle;
 	
+	// Circle
 	private int circleDiameter;
 	private int circleX;
 	private int circleY;
 	
+	// Is mouse now dragging?
 	private boolean dragging = false;
-	
-	//private Ani ani;
 	
 	// Getter Setter
 	public void setCircleDiameter(int r){circleDiameter = r;}
@@ -112,8 +112,6 @@ public class Network {
 			
 			ch.display();
 		}
-		
-
 		// Show link
 		drawLink();
 	}
@@ -134,6 +132,7 @@ public class Network {
 			}
 		}
 	}
+	
 	public void addCharactersInCircle(Character ch)
 	{	
 		charactersInCircle.add(ch);
@@ -154,8 +153,10 @@ public class Network {
 		{
 			// Ani
 			ch.setState(4);// inAni
-			Ani.to(ch,1.3f,"x",ch.getCX());
+			Ani ani = Ani.to(ch,1.3f,"x",ch.getCX());
 			Ani.to(ch,1.3f,"y",ch.getCY());
+			
+			ani.setCallback("onEnd:addAniDone");
 		}	
 	}
 	
@@ -176,8 +177,10 @@ public class Network {
 				
 				// Ani
 				ch.setState(4);// inAni
-				Ani.to(ch,1.3f,"x",ch.getOGX());
+				Ani ani = Ani.to(ch,1.3f,"x",ch.getOGX());
 				Ani.to(ch,1.3f,"y",ch.getOGY());
+				
+				ani.setCallback("onEnd:removeAniDone");
 			}
 		}	
 	}
