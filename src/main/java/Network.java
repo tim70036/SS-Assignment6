@@ -199,8 +199,8 @@ public class Network {
 				if(tar.getShowLink())
 				{
 					int intense = ch.getTarget().get(tar);
-					parent.strokeWeight(intense * 2);
-					parent.stroke(0);
+					parent.strokeWeight(intense / 2);
+					parent.stroke(0,77,173,250);
 					parent.line(ch.getX(), ch.getY(), tar.getX(), tar.getY());
 				}
 			}

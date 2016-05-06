@@ -71,7 +71,7 @@ public class MainApplet extends PApplet{
 		fill(255,165,0);
 		
 		textFont(font);
-		text("Star Wars " + episode,470,70);
+		text("Star Wars " + episode,870,70);
 	}
 	
 	public void keyPressed()
