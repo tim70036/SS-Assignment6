@@ -16,4 +16,4 @@
 ### Visualization
 + The width of each link is visualized based on the value of the link.
 + The characters on the big circle is well-distributed.
-+ There are animation when the button of Add All or Clear is used to moving.
++ There is animation when the button of Add All or Clear is used to moving.
