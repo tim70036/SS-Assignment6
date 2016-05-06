@@ -2,6 +2,7 @@ package main.java;
 
 import java.util.HashMap;
 
+import de.looksgood.ani.Ani;
 import processing.core.PApplet;
 
 /**
@@ -75,6 +76,7 @@ public class Character {
 		}
 		else if(state == 4)// inAni
 		{
+			
 			if(x == ogx && y == ogy)
 				state = 3;
 			else if(x == cx && y == cy)

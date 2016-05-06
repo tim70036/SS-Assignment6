@@ -24,6 +24,8 @@ public class Network {
 	
 	private boolean dragging = false;
 	
+	//private Ani ani;
+	
 	// Getter Setter
 	public void setCircleDiameter(int r){circleDiameter = r;}
 	public void setCircleX(int x){circleX = x;}
@@ -152,13 +154,15 @@ public class Network {
 		{
 			// Ani
 			ch.setState(4);// inAni
-			Ani.to(ch,1.3f,"x",ch.getCX());
+			Ani ani = Ani.to(ch,1.3f,"x",ch.getCX());
 			Ani.to(ch,1.3f,"y",ch.getCY());
 		}	
 	}
 	
 	public void removeCharactersInCircle(Character ch)
 	{
+		for(Character cha : characters)
+			System.out.println(cha.getState());
 		charactersInCircle.remove(ch);
 		rearrangeCharactersIncricle();
 	}
@@ -180,13 +184,14 @@ public class Network {
 		}	
 	}
 	
+	// let the characters on circle can arrange in a even mode
 	public void rearrangeCharactersIncricle()
 	{
 		double pos = 0;
 		for(Character cha : getCharactersInCircle()){
 			cha.setCX((float)(getCircleX() + getCircleDiameter()/2*Math.cos(Math.toRadians(pos))));
 			cha.setCY((float)(getCircleY() + getCircleDiameter()/2*Math.sin(Math.toRadians(pos))));
-			pos += 360 / getCharactersInCircle().size();
+			pos += (double)360 / (double)getCharactersInCircle().size();
 		}
 	}
 	
